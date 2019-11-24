@@ -1,10 +1,10 @@
 <template>
   <div class="home">
 		<img alt="Vue logo" src="../assets/logo.png" />
-		<h1>Videos</h1>
+		<h1 class="display-4 ma-4 d-flex justify-center">All Videos</h1>
 		
 
-		<div class="video-container">
+		<div class="d-flex flex-wrap">
 			<div v-for="video in videos" :key="video.id">
 				<VideoListVideo :video="video"></VideoListVideo>
 			</div>

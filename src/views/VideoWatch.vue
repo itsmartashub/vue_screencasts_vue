@@ -1,18 +1,32 @@
 <template>
-	<div class="video_watch_page">
-		<video-player
-			class="video-player-box"
-			ref="videoPlayer"
-			:options="playerOptions"
-		>
-		</video-player>
-		<span v-for="tag_id in video.tag_ids" :key="tag_id">
-			<button class="tag-button">{{ getTag(tag_id).name }}</button>
-		</span>
+	<v-container grid-list-xs>
+		<v-row>
+			<v-col md="9" cols="12">
+				<video-player
+					class="video-player-box"
+					ref="videoPlayer"
+					:options="playerOptions"
+				></video-player>
+			</v-col>
 
-		<h1>{{ video.name }}</h1>
-		<div v-html="video.description"></div>
-	</div>
+			<v-col md="3" cols="12">
+				<div class="display-1">{{ video.name }}</div>
+				<div v-html="video.description"></div>
+
+				<span v-for="tag_id in video.tag_ids" :key="tag_id">
+					<v-btn
+						:to="{name: 'tag', params: {id: tag_id}}"
+						color="green lighten-2"
+						class="ma-1 mb-2"
+					>
+						{{ getTag(tag_id).name }}
+					</v-btn>
+				</span>
+			</v-col>
+
+		</v-row>
+	</v-container>
+
 </template>
 
 <script>
@@ -43,6 +57,7 @@ export default {
 					src: this.video.videoUrl
 				}],
 				poster: this.video.thumbnail,
+				fluid: true // da se video shrinkuje po potrebi
 			}
 		}
 	},
@@ -50,13 +65,5 @@ export default {
 </script>
 
 <style>
-/* .video_watch_page {
 
-} */
-
-.video-player-box .video-js {
-	margin: auto;
-	height: 50vh;
-	width: 80vw;
-}
 </style>

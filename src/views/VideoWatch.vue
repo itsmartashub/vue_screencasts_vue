@@ -11,6 +11,9 @@
 
 			<v-col md="3" cols="12">
 				<div class="display-1">{{ video.name }}</div>
+
+				<div class="green--text" v-if="isPlayed">Played</div>
+
 				<div v-html="video.description"></div>
 
 				<span v-for="tag_id in video.tag_ids" :key="tag_id">
@@ -59,6 +62,10 @@ export default {
 				poster: this.video.thumbnail,
 				fluid: true // da se video shrinkuje po potrebi
 			}
+		},
+
+		isPlayed() {
+			return true
 		}
 	},
 }

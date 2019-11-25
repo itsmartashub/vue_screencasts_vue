@@ -31,6 +31,17 @@ export default new Vuex.Store({
 	  ADD_VIDEO(state, video) {
 		  let videos = state.videos.concat(video)
 		  state.videos = videos
+	  },
+	  DELETE_VIDEO(state, videoId) {
+		  let videos = state.videos.filter(v => v.id != videoId)
+		  state.videos = videos
+	  },
+	  EDIT_VIDEO(state, video) {
+		  state.videos.forEach(v => {
+			  if(v.id == video.id) {
+				  v = video
+			  }
+		  })
 	  }
   },
 
@@ -72,6 +83,26 @@ export default new Vuex.Store({
 			commit('ADD_VIDEO', savedVideo)
 
 			return savedVideo
+		},
+		
+		async deleteVideo({commit}, video) {
+			// delete video on the server
+			let response = await Api().delete(`/videos/${video.id}`)
+			// debugger // response.status
+			if(response.status == 200 || response.status == 204) {
+				// delete video in the state
+				commit('DELETE_VIDEO', video.id)
+			}
+
+		},
+
+		async editVideo({commit}, video) {
+			let response = await Api().put(`/videos/${video.id}`, video)
+			let newVideo = response.data.data.attributes
+
+			commit('EDIT_VIDEO', newVideo)
+
+			return newVideo // ovo se valjda radi da bismo u componenti mogli prozvati ovaj metod u async await modu i da bismo nakon uspesnog editovanja redirektovali na neku stranicu
 		}
 
   },

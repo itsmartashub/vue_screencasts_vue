@@ -5,7 +5,7 @@
 			 <v-btn text to="/">Vue Screencasts</v-btn>
 		 </v-toolbar-title>
 
-		<v-btn text to="/video/new">Add Video</v-btn>
+		<v-btn text to="/admin/videos">Admin</v-btn>
 
       <v-spacer></v-spacer>
 

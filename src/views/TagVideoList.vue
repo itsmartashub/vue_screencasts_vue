@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<h1 class="display-3 ma-4 d-flex justify-center">Videos with Tag "{{ tag.name }}" </h1>
-		<div class="d-flex flex-wrap">
+		<div class="d-flex flex-wrap justify-center">
 			<div v-for="video in videosOnTag" :key="video.id">
 				<VideoListVideo :video="video"></VideoListVideo>
 			</div>

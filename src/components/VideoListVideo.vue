@@ -4,6 +4,12 @@
 		<v-img :src="video.thumbnail" />
 		<v-card-title>{{ video.name }}</v-card-title>
 
+		<v-card-text>
+			<div v-if="isPlayed" class="green--text">
+				<font-awesome-icon icon="check" /> Played
+			</div>
+		</v-card-text>
+
 		<v-card-actions>
 			<span v-for="tag_id in video.tag_ids" :key="tag_id">
 				<v-btn
@@ -23,13 +29,18 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 
 export default {
 	name: 'VideoListVideo',
 	props: ['video'],
 	computed: {
-		...mapGetters(['getTag'])
+		...mapGetters(['getTag']),
+		...mapState(['playedVideos']),
+
+		isPlayed() {
+			return this.playedVideos.includes(this.video.id)
+		}
 	}
 }
 </script>

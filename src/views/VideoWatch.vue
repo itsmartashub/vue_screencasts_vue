@@ -6,13 +6,19 @@
 					class="video-player-box"
 					ref="videoPlayer"
 					:options="playerOptions"
+					@ended="markPlayed"
 				></video-player>
 			</v-col>
 
 			<v-col md="3" cols="12">
 				<div class="display-1">{{ video.name }}</div>
 
-				<div class="green--text" v-if="isPlayed">Played</div>
+				<div v-if="isPlayed" class="green--text">
+					<font-awesome-icon icon="check" /> Played
+				</div>
+				<div v-else>
+					<v-btn x-small @click="markPlayed">Mark Played</v-btn>
+				</div>
 
 				<div v-html="video.description"></div>
 
@@ -35,7 +41,7 @@
 <script>
 import 'video.js/dist/video-js.css'
 import { videoPlayer } from 'vue-video-player' // yarn add vue-video-player --save
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 
 export default {
 	name: 'VideoWatch',
@@ -45,10 +51,11 @@ export default {
 
 	computed: {
 		video() {
-			return this.$store.state.videos.find(v => v.id == this.$route.params.id)
+			return this.videos.find(v => v.id == this.$route.params.id) || {}
 		},
 
 		...mapGetters(['getTag']),
+		...mapState(['playedVideos', 'videos']),
 		
 		playerOptions() { // https://www.npmjs.com/package/vue-video-player
 			return {
@@ -65,7 +72,13 @@ export default {
 		},
 
 		isPlayed() {
-			return true
+			return this.playedVideos.includes(this.video.id)
+		}
+	},
+
+	methods: {
+		markPlayed() {
+			this.$store.dispatch('markPlayed', this.video.id)
 		}
 	},
 }

@@ -27,6 +27,10 @@ export default new Vuex.Store({
 		  let playedVideos = state.playedVideos.concat(videoId) // zelimo pored niza pustenih videa zelim i njihov id
 		  state.playedVideos = playedVideos
 		  window.localStorage.playedVideos = JSON.stringify(playedVideos)
+	  },
+	  ADD_VIDEO(state, video) {
+		  let videos = state.videos.concat(video)
+		  state.videos = videos
 	  }
   },
 
@@ -57,9 +61,19 @@ export default new Vuex.Store({
 			let playedVideos = JSON.parse(window.localStorage.playedVideos)
 			commit('SET_PLAYED_VIDEOS', playedVideos)
 		},
+
 		markPlayed({commit}, videoId) {
 			commit('MARK_VIDEO_PLAYED', videoId)
+		},
+
+		async createVideo({commit}, video) {
+			let response = await Api().post('/videos', video) //! za ovo sam morala na serveru u app/controllers/api/video_controller.rb da zakomentarisem :authenticate_user jer je trazio auth a to trenutno nemamo
+			let savedVideo = response.data.data.attributes
+			commit('ADD_VIDEO', savedVideo)
+
+			return savedVideo
 		}
+
   },
 
   getters: {

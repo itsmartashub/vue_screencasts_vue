@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-		<img alt="Vue logo" src="../assets/logo.png" />
+		<!-- <img alt="Vue logo" src="../assets/logo.png" /> -->
 		<h1 class="display-4 ma-4 d-flex justify-center">All Videos</h1>
 		
 

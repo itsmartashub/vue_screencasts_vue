@@ -6,6 +6,10 @@ import VideoCreate from '../views/VideoCreate.vue'
 import TagVideoList from '../views/TagVideoList.vue'
 import AdminVideoList from '../views/AdminVideoList.vue'
 import AdminVideoEdit from '../views/AdminVideoEdit.vue'
+import AdminUserList from '../views/AdminUserList.vue'
+import UserLogin from '../views/UserLogin.vue'
+import UserRegistration from '../views/UserRegistration.vue'
+
 
 Vue.use(VueRouter)
 
@@ -15,6 +19,16 @@ const routes = [
     name: 'home',
     component: Home
   },
+   {
+    path: '/login',
+    name: 'user-login',
+    component: UserLogin
+  },
+  {
+    path: '/registration',
+    name: 'user-registration',
+    component: UserRegistration
+  },
 //   {
 //     path: '/about',
 //     name: 'about',
@@ -23,7 +37,11 @@ const routes = [
 //     // which is lazy-loaded when the route is visited.
 //     component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
 //   },
-
+	{
+    path: '/admin/users',
+    name: 'admin-user-list',
+    component: AdminUserList
+  },
   {
     path: '/admin/videos',
     name: 'admin-video-list',

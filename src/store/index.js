@@ -10,6 +10,9 @@ export default new Vuex.Store({
 	  tags: [],
 	//   playedVideos: [2, 3, 4], // umesto ovog, dohvatacemo playedVideos niz iz LS-a
 	  playedVideos: [],
+
+	  users: [],
+	  currentUser: {},
   },
 
   mutations: {
@@ -42,6 +45,16 @@ export default new Vuex.Store({
 				  v = video
 			  }
 		  })
+	  },
+	  SET_USERS(state, users) {
+		  state.users = users
+	  },
+	  LOGOUT_USER(state) {
+		  state.currentUser = {}
+	  },
+	  SET_CURRENT_USER(state, user) {
+		  state.currentUser = user
+		  window.localStorage.currentUser = JSON.stringify(user)
 	  }
   },
 
@@ -103,6 +116,52 @@ export default new Vuex.Store({
 			commit('EDIT_VIDEO', newVideo)
 
 			return newVideo // ovo se valjda radi da bismo u componenti mogli prozvati ovaj metod u async await modu i da bismo nakon uspesnog editovanja redirektovali na neku stranicu
+		},
+
+		async loadUsers({commit}) {
+			let response = await Api().get('/users')
+			let users = response.data.data
+
+			commit('SET_USERS', users.map(u => u.attributes))
+
+			let user = JSON.parse(window.localStorage.currentUser)
+			commit('SET_CURRENT_USER', user)
+		},
+
+		logoutUser({commit}) {
+			commit('LOGOUT_USER')
+		},
+
+		async loginUser({commit}, loginInfo) { // iz loginInfo podaci, ne treba nam sve vec email i password
+			try {
+				let response = await Api().post('/sessions', loginInfo)
+				let user = response.data.data.attributes
+				
+				commit('SET_CURRENT_USER', user)
+
+				return user
+			} catch {
+				// console.error(error)
+				return {
+					error: 'Email/password combination was incorrect. Please try again.'
+				}
+			}
+		},
+
+		async registerUser({commit}, registrationInfo) {
+			try {
+				let response = await Api().post('/users', registrationInfo)
+				let user = response.data.data.attributes
+				
+				commit('SET_CURRENT_USER', user)
+
+				return user
+			} catch {
+				// console.error(error)
+				return {
+					error: 'There was an error. Please try again.'
+				}
+			}
 		}
 
   },

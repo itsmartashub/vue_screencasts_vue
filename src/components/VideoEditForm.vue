@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import validations from '@/utils/validations'
+
 export default {
 	name: 'VideoEditForm',
 
@@ -40,18 +42,18 @@ export default {
 	data() {
 		return {
 			valid: false,
+			...validations,
+			// required(propertyType) {
+			// 	return val => val && val.length > 0 || `You must input a ${propertyType}`
+			// },
 
-			required(propertyType) {
-				return val => val && val.length > 0 || `You must input a ${propertyType}`
-			},
+			// minLength(propertyType, minLength) {
+			// 	return val => val && val.length >= minLength || `${propertyType} must be at least ${minLength} characters`
+			// },
 
-			minLength(propertyType, minLength) {
-				return val => val && val.length >= minLength || `${propertyType} must be at least ${minLength} characters`
-			},
-
-			maxLength(propertyType, maxLength) {
-				return val => val && val.length <= maxLength || `${propertyType} must be less than ${maxLength} characters`
-			},
+			// maxLength(propertyType, maxLength) {
+			// 	return val => val && val.length <= maxLength || `${propertyType} must be less than ${maxLength} characters`
+			// },
 		}
 	},
 }

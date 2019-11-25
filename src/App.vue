@@ -9,9 +9,16 @@
 
       <v-spacer></v-spacer>
 
-      <v-btn text>
-        <span class="mr-2">Login</span>
-      </v-btn>
+		
+		<div v-if="currentUser.name">
+			{{ currentUser.name }}
+			<v-btn class="mr-2" color="red" dark @click="logoutUser">Logout</v-btn>
+		</div>
+
+      <div v-else text>
+        <v-btn class="mr-2" to="/login" color="#108775" dark>Login</v-btn>
+        <v-btn class="mr-2" to="/registration" color="#2f495e" dark>Register</v-btn>
+      </div>
     </v-app-bar>
 
     <v-content>
@@ -21,6 +28,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 
 export default {
   name: 'App',
@@ -32,8 +40,18 @@ export default {
 	  this.$store.dispatch('loadVideos')
   },
 
+  computed: {
+	  ...mapState(['currentUser'])
+  },
+
   data: () => ({
     //
   }),
+
+  methods: {
+	  logoutUser() {
+		  this.$store.dispatch('logoutUser')
+	  }
+  },
 };
 </script>

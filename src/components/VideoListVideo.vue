@@ -13,9 +13,10 @@
 		<v-card-actions>
 			<span v-for="tag_id in video.tag_ids" :key="tag_id">
 				<v-btn
-					color="#00c58e"
+					color="#108775"
 					class="mr-2"
 					small
+					dark
 					@mousedown.stop
 					:to="{name: 'tag', params: {id: tag_id}}"
 				>

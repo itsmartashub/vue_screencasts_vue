@@ -5,7 +5,7 @@
 		<v-card-title>{{ video.name }}</v-card-title>
 
 		<v-card-text>
-			<div v-if="isPlayed" class="green--text">
+			<div v-if="isPlayed" class="orange--text">
 				<font-awesome-icon icon="check" /> Played
 			</div>
 		</v-card-text>
@@ -13,7 +13,7 @@
 		<v-card-actions>
 			<span v-for="tag_id in video.tag_ids" :key="tag_id">
 				<v-btn
-					color="green lighten-2"
+					color="#00c58e"
 					class="mr-2"
 					small
 					@mousedown.stop

@@ -51,6 +51,7 @@ export default new Vuex.Store({
 	  },
 	  LOGOUT_USER(state) {
 		  state.currentUser = {}
+			window.localStorage.currentUser = JSON.stringify({})
 	  },
 	  SET_CURRENT_USER(state, user) {
 		  state.currentUser = user
@@ -126,6 +127,12 @@ export default new Vuex.Store({
 
 			let user = JSON.parse(window.localStorage.currentUser)
 			commit('SET_CURRENT_USER', user)
+		},
+
+		async loadCurrent({commit, dispatch}) {
+			let user = JSON.parse(window.localStorage.currentUser)
+			commit('SET_CURRENT_USER', user)
+			// dispatch('loadPlayedVideos', user.id)
 		},
 
 		logoutUser({commit}) {

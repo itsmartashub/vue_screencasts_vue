@@ -1,7 +1,7 @@
 <template>
 	<v-container grid-list-xs>
 		<h1>Video List</h1>
-		<v-btn text to="/video/new" color="#2f495e">Add Video</v-btn>
+		<v-btn text to="/admin/video/new" color="#00c58e">Add Video</v-btn>
 
 		<div class="flex-table">
 			<div>Name</div>

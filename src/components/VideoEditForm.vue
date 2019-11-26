@@ -27,7 +27,7 @@
 			:rules="[required('thumbnail URL')]"
 		/>
 
-		<v-btn @click="saveVideo" :disabled="!valid" color="amber">{{ buttonText }}</v-btn>
+		<v-btn @click="saveVideo" :disabled="!valid" color="#00c58e" class="white--text">{{ buttonText }}</v-btn>
 	</v-form>
 </template>
 

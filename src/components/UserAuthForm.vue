@@ -27,7 +27,7 @@
 
 		/>
 
-			<v-btn color="blue-grey white--text" @click="submitForm(userInfo)" :disabled="!valid">{{ buttonText }}</v-btn>
+			<v-btn color="#108775" class="white--text" @click="submitForm(userInfo)" :disabled="!valid">{{ buttonText }}</v-btn>
 	</v-form>
 </template>
 

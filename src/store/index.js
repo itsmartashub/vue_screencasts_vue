@@ -75,6 +75,9 @@ export default new Vuex.Store({
 		DISCONNECT_TAG_FROM_VIDEO(state, {video, tag}) {
 			video.tag_ids = video.tag_ids.filter(t_id => t_id != tag.id )
 			tag.video_ids = tag.video_ids.filter(v_id => v_id != video.id)
+		},
+		CREATE_TAG(state, {tag}) {
+			state.tags = state.tags.concat(tag)
 		}
   },
 
@@ -86,18 +89,23 @@ export default new Vuex.Store({
 
 			console.log(tags);
 			// debugger
-			tags.forEach(t => {
-				t.attributes.id = t.id
-				t.attributes.video_ids = t.relationships.videos.data.map(v => v.id)
-			})
 
 			videos.forEach(v => {
 				v.attributes.tag_ids = v.relationships.tags.data.map(t => t.id)
 			})
 
 			// debugger
-
 			commit('SET_VIDEOS', videos.map(v => v.attributes))
+		},
+
+		async loadAllTags({commit}) {
+			let response = await Api().get('/tags')
+			let tags = response.data.data
+
+			tags.forEach(t => {
+				t.attributes.id = t.id
+				t.attributes.video_ids = t.relationships.videos.data.map(v => v.id)
+			})
 			commit('SET_TAGS', tags.map(t => t.attributes))
 		},
 
@@ -221,8 +229,17 @@ export default new Vuex.Store({
 			})
 			
 			commit('DISCONNECT_TAG_FROM_VIDEO', {video, tag})
-		}
+		},
 
+		async createTag({commit}, {name}) {
+			let response = await Api().post('/tags', {name}) // server vraca tag sa name i id-em
+			let createdTag = response.data.data.attributes // {name: nekoIme}
+			createdTag.id = response.data.data.id // id taga
+
+			commit('CREATE_TAG', { tag: createdTag })
+
+			return createdTag // da bismo mogli posle u templejtu da u asinhronoj f-ji, ovde je slucaj sa set() sacuvamo odg ove f-je tj return u promenljivoj koju posle prosledjujemo u connectTagToVideo() dispatchovanju kao jedan od propertija 
+		},
 
 
   },

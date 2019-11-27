@@ -50,6 +50,7 @@ export default {
   created() {
 	  this.$store.dispatch('loadVideos')
 	  this.$store.dispatch('loadCurrent')
+	  this.$store.dispatch('loadAllTags')
   },
 
   computed: {

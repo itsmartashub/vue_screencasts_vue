@@ -13,7 +13,8 @@
 			<div>{{ video.name }}</div>
 			<div>{{ video.description | abbreviate}}</div>
 			<div class="actions">
-				<router-link :to="{ name: 'video-watch', params: {id: video.id} }">Show</router-link>
+				<router-link :to="{ name: 'video-watch', params: {id: video.id} }">Watch</router-link>
+				<router-link :to="{ name: 'admin-video-show', params: {id: video.id} }">Show</router-link>
 				<router-link :to="{ name: 'admin-video-edit', params: {id: video.id} }">Edit</router-link>
 				<v-btn @click="deleteVideo(video)" x-small color="red white--text">Delete</v-btn>
 			</div>

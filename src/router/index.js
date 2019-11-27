@@ -10,6 +10,8 @@ import AdminUserList from '../views/AdminUserList.vue'
 import UserLogin from '../views/UserLogin.vue'
 import UserRegistration from '../views/UserRegistration.vue'
 import Admin from '../views/Admin.vue'
+import AdminVideoShow from '../views/AdminVideoShow.vue'
+
 
 
 Vue.use(VueRouter)
@@ -48,6 +50,12 @@ const routes = [
 				path: 'videos/:id/edit', // /admin/videos/:id/edit
 				name: 'admin-video-edit',
 				component: AdminVideoEdit,
+				params: true
+			},
+			{
+				path: 'videos/:id/show', // /admin/videos/:id/edit
+				name: 'admin-video-show',
+				component: AdminVideoShow,
 				params: true
 			},
 			{ //! da smo ovo stavili ispod /video/:id path-a, ovo ne bi radilo kada kliknemo na Add Vide button da idemo na /video/new, jer vue onda prvo koristi /video/:id i pokusava da sibne id kao new

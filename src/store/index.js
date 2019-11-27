@@ -17,56 +17,65 @@ export default new Vuex.Store({
   },
 
   mutations: {
-	  SET_VIDEOS(state, videos) {
+		SET_VIDEOS(state, videos) {
 			// response.data.data.map(v => v.attributes)
-		  state.videos = videos
-	  },
-	  SET_TAGS(state, tags) {
-		  state.tags = tags
-	  },
-	  SET_PLAYED_VIDEOS(state, playedVideos) {
-		  state.playedVideos = playedVideos
-	  },
-	  MARK_VIDEO_PLAYED(state, videoId) {
+			state.videos = videos
+		},
+		SET_TAGS(state, tags) {
+			state.tags = tags
+		},
+		SET_PLAYED_VIDEOS(state, playedVideos) {
+			state.playedVideos = playedVideos
+		},
+		MARK_VIDEO_PLAYED(state, videoId) {
 		//   let playedVideos = state.playedVideos.concat(videoId) // zelimo pored niza pustenih videa zelim i njihov id
 		//   state.playedVideos = playedVideos
 		//   window.localStorage.playedVideos = JSON.stringify(playedVideos)
 		let playedVideos = state.currentUser.playedVideos.concat(videoId);
-      state.currentUser.playedVideos = playedVideos;
-	  },
-	  ADD_VIDEO(state, video) {
-		  let videos = state.videos.concat(video)
-		  state.videos = videos
-	  },
-	  DELETE_VIDEO(state, videoId) {
-		  let videos = state.videos.filter(v => v.id != videoId)
-		  state.videos = videos
-	  },
-	  EDIT_VIDEO(state, video) {
-		  state.videos.forEach(v => {
-			  if(v.id == video.id) {
-				  v = video
-			  }
-		  })
-	  },
-	  SET_USERS(state, users) {
-		  state.users = users
-	  },
-	  LOGOUT_USER(state) {
-		  state.currentUser = {}
+		state.currentUser.playedVideos = playedVideos;
+		},
+		ADD_VIDEO(state, video) {
+			let videos = state.videos.concat(video)
+			state.videos = videos
+		},
+		DELETE_VIDEO(state, videoId) {
+			let videos = state.videos.filter(v => v.id != videoId)
+			state.videos = videos
+		},
+		EDIT_VIDEO(state, video) {
+			state.videos.forEach(v => {
+				if(v.id == video.id) {
+					v = video
+				}
+			})
+		},
+		SET_USERS(state, users) {
+			state.users = users
+		},
+		LOGOUT_USER(state) {
+			state.currentUser = {}
 			window.localStorage.currentUser = JSON.stringify({})
-	  },
-	  SET_CURRENT_USER(state, user) {
-		  state.currentUser = user
-		  window.localStorage.currentUser = JSON.stringify(user)
-	  },
-	  SET_SNACKBAR(state, snackbar) {
-		  state.snackbars = state.snackbars.concat(snackbar)
-	  },
-	  SET_PLAYED_VIDEOS(state, playedVideos) {
+		},
+		SET_CURRENT_USER(state, user) {
+			state.currentUser = user
+			window.localStorage.currentUser = JSON.stringify(user)
+		},
+		SET_SNACKBAR(state, snackbar) {
+			state.snackbars = state.snackbars.concat(snackbar)
+		},
+		SET_PLAYED_VIDEOS(state, playedVideos) {
 		//   state.currentUser.playedVideos = playedVideos 
 		Vue.set(state.currentUser, 'playedVideos', playedVideos) // u Vue 3 ovo bi trebalo valjda da radi bez tog Vue.set(), mada ja msm da meni i sad radi (tipa kad otvorimo VideoWatch da i tamo pise "Played" na videu)
-	  }
+		},
+		CONNECT_TAG_TO_VIDEO(state, {video, tag}) {
+			video.tag_ids = video.tag_ids.concat(tag.id.toString())
+			tag.video_ids = tag.video_ids.concat(video.id.toString())
+		},
+
+		DISCONNECT_TAG_FROM_VIDEO(state, {video, tag}) {
+			video.tag_ids = video.tag_ids.filter(t_id => t_id != tag.id )
+			tag.video_ids = tag.video_ids.filter(v_id => v_id != video.id)
+		}
   },
 
   actions: {
@@ -195,7 +204,26 @@ export default new Vuex.Store({
 			snackbar.showing = true
 			snackbar.color = snackbar.color || '#00c58e'
 			commit('SET_SNACKBAR', snackbar)
+		},
+
+		connectTagToVideo({commit}, {video, tag}) { // btw, za actions nikad ne moze 3 ili vise argumenta, valjda moze samo dva
+			Api().post('/video_tags', {
+				video_id: video.id,
+				tag_id: tag.id
+			})
+
+			commit('CONNECT_TAG_TO_VIDEO', {video, tag})
+		},
+		disconnectTagFromVideo({commit}, {video, tag}) {
+			Api().post('/video_tags/delete', { // prvo je probao on na apiju da uradi delete umesto post, ali onda trazi nmp sta za url ka kojoj saljemo zahtev, tako da je ipak odradio post i dodao /delete u url
+				video_id: video.id,
+				tag_id: tag.id
+			})
+			
+			commit('DISCONNECT_TAG_FROM_VIDEO', {video, tag})
 		}
+
+
 
   },
 

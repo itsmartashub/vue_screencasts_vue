@@ -24,6 +24,17 @@
     <v-content>
       <router-view />
     </v-content>
+
+	<v-snackbar
+		v-for="(snackbar, index) in snackbars.filter(s => s.showing)" :key="snackbar + Math.random()"
+		:color="snackbar.color"
+		v-model="snackbar.showing"
+		:timeout="snackbar.timeout"
+		:style="`bottom: ${(index * 60) + 8}px`"
+	>
+		{{ snackbar.text }}
+		<v-btn dark text @click.native="snackbar.showing = false">Close</v-btn>
+	</v-snackbar>
   </v-app>
 </template>
 
@@ -42,7 +53,7 @@ export default {
   },
 
   computed: {
-	  ...mapState(['currentUser'])
+	  ...mapState(['currentUser', 'snackbars'])
   },
 
   data: () => ({

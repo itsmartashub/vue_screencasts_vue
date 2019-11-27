@@ -12,6 +12,11 @@ export default {
 	name: 'AdminVideoEdit',
 	components: { VideoEditForm },
 
+	data() {
+		return {
+		}
+	},
+
 	computed: {
 		...mapState(['videos']),
 
@@ -22,7 +27,9 @@ export default {
 
 	methods: {
 		async editVideo() {
-			let newVideo = await this.$store.dispatch('editVideo', this.video)
+			let video = await this.$store.dispatch('editVideo', this.video)
+			this.$store.dispatch('setSnackbar', { text: `You have successfully edited your video, "${video.name}" ` })
+
 			this.$router.push({ name: 'admin-video-list' })
 		}
 	},

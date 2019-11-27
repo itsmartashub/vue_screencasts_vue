@@ -17,11 +17,11 @@ export default {
 			let user = await this.$store.dispatch('registerUser', registrationInfo)
 			
 			if(user.error) {
-				alert(user.error)
+				this.$store.dispatch('setSnackbar', { color: 'error', text: user.error })
 			} else {
-				alert(`Welcome to our app, ${user.name}!`)
+				this.$store.dispatch('setSnackbar', { color: '#00c58e', text: `Welcome to our app,  ${user.name}!` })
+				this.$router.push('/')
 			}
-			// this.$router.push({ name: 'home' })
 		}
 	},
 }

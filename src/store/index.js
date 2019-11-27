@@ -13,6 +13,7 @@ export default new Vuex.Store({
 
 	  users: [],
 	  currentUser: {},
+	  snackbars: []
   },
 
   mutations: {
@@ -56,6 +57,9 @@ export default new Vuex.Store({
 	  SET_CURRENT_USER(state, user) {
 		  state.currentUser = user
 		  window.localStorage.currentUser = JSON.stringify(user)
+	  },
+	  SET_SNACKBAR(state, snackbar) {
+		  state.snackbars = state.snackbars.concat(snackbar)
 	  }
   },
 
@@ -169,6 +173,12 @@ export default new Vuex.Store({
 					error: 'There was an error. Please try again.'
 				}
 			}
+		},
+
+		setSnackbar({commit}, snackbar) {
+			snackbar.showing = true
+			snackbar.color = snackbar.color || '#00c58e'
+			commit('SET_SNACKBAR', snackbar)
 		}
 
   },

@@ -6,6 +6,7 @@
 
 <script>
 import UserAuthForm from '@/components/UserAuthForm'
+import { userInfo } from 'os'
 
 export default {
 	name: 'UserLogin',
@@ -16,11 +17,18 @@ export default {
 			let user = await this.$store.dispatch('loginUser', loginInfo)
 			
 			if(user.error) {
-				alert(user.error)
+				this.$store.dispatch('setSnackbar', { color: 'error', text: user.error })
 			} else {
-				alert(`Thank you for signing in, ${user.name}!`)
+				// alert(`Thank you for signing in, ${user.name}!`)
+				this.$store.dispatch('setSnackbar', { color: '#00c58e', text: `Thank you for signing in,  ${user.name}!` })
+
+				if(user.admin) {
+					this.$router.push('/admin/videos')
+
+				} else {
+					this.$router.push('/')
+				}
 			}
-			// this.$router.push({ name: 'home' })
 		}
 	},
 }

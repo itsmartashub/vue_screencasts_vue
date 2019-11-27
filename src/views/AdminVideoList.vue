@@ -44,6 +44,7 @@ export default {
 
 			if(response) {
 				this.$store.dispatch('deleteVideo', video)
+				this.$store.dispatch('setSnackbar', { text: `You have successfully deleted your video, "${video.name}" ` })
 			}
 		}
 	},

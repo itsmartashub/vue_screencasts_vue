@@ -5,7 +5,7 @@
 		<v-card-title>{{ video.name }}</v-card-title>
 
 		<v-card-text>
-			<div v-if="isPlayed" class="red--text">
+			<div v-if="isPlayed(video.id)" class="red--text">
 				<font-awesome-icon icon="check" /> Played
 			</div>
 		</v-card-text>
@@ -30,18 +30,13 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
 	name: 'VideoListVideo',
 	props: ['video'],
 	computed: {
-		...mapGetters(['getTag']),
-		...mapState(['playedVideos']),
-
-		isPlayed() {
-			return this.playedVideos.includes(this.video.id)
-		}
+		...mapGetters(['getTag', 'isPlayed']),
 	}
 }
 </script>

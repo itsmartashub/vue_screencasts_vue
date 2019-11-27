@@ -13,11 +13,11 @@
 			<v-col md="3" cols="12">
 				<div class="display-1">{{ video.name }}</div>
 
-				<div v-if="isPlayed" class="green--text">
+				<div v-if="isPlayed(video.id)" class="red--text">
 					<font-awesome-icon icon="check" /> Played
 				</div>
 				<div v-else>
-					<v-btn x-small @click="markPlayed" color="orange">Mark Played</v-btn>
+					<v-btn x-small @click="markPlayed" color="red lighten-1" dark v-if="currentUser.name">Mark Played</v-btn>
 				</div>
 
 				<div v-html="video.description"></div>
@@ -54,8 +54,8 @@ export default {
 			return this.videos.find(v => v.id == this.$route.params.id) || {}
 		},
 
-		...mapGetters(['getTag']),
-		...mapState(['playedVideos', 'videos']),
+		...mapGetters(['getTag', 'isPlayed']),
+		...mapState(['videos', 'currentUser']),
 		
 		playerOptions() { // https://www.npmjs.com/package/vue-video-player
 			return {
@@ -70,10 +70,6 @@ export default {
 				fluid: true // da se video shrinkuje po potrebi
 			}
 		},
-
-		isPlayed() {
-			return this.playedVideos.includes(this.video.id)
-		}
 	},
 
 	methods: {

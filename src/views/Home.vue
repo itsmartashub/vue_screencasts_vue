@@ -59,12 +59,13 @@ export default {
 		// tags() { return this.$store.state.tags }
 
 		//? sa mapState
-		...mapState(['videos', 'tags']),
-		...mapGetters(['getTag'])
+		...mapState({
+			videos: state => state.videos.videos, 
+			tags: state => state.tags.tags
+		}),
+		...mapGetters({
+			getTag: 'tags/get'
+		})
 	}
 }
 </script>
-
-<style>
-
-</style> 

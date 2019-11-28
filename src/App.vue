@@ -44,27 +44,27 @@ import { mapState } from 'vuex'
 export default {
   name: 'App',
 
-  components: {
-  },
-
   created() {
-	  this.$store.dispatch('loadVideos')
-	  this.$store.dispatch('loadCurrent')
-	  this.$store.dispatch('loadAllTags')
+	  this.$store.dispatch('videos/loadAll')
+	  this.$store.dispatch('users/loadCurrent')
+	  this.$store.dispatch('tags/loadAll')
   },
 
   computed: {
-	  ...mapState(['currentUser', 'snackbars'])
+	//   ...mapState(['currentUser', 'snackbars']) // bez modules i namespaced
+	  ...mapState({
+		  currentUser: state => state.users.currentUser,
+		  snackbars: state => state.snackbar.snackbars
+		}) // sa modules i namespaced: true
   },
-
-  data: () => ({
-    //
-  }),
 
   methods: {
 	  logoutUser() {
-		  this.$store.dispatch('logoutUser')
+		  this.$store.dispatch('users/logout')
+		  this.$nextTick(() => {
+			  this.$router.push('/')
+		  })
 	  }
   },
-};
+}
 </script>

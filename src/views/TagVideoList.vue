@@ -17,8 +17,12 @@ export default {
 	components: { VideoListVideo },
 
 	computed: {
-		...mapState(['videos']),
-		...mapGetters(['getTag']),
+		...mapState({
+			videos: s => s.videos.videos
+		}),
+		...mapGetters({
+			getTag: 'tags/get'
+		}),
 
 		tag() {
 			return this.getTag(this.$route.params.id)
@@ -30,7 +34,3 @@ export default {
 	}
 }
 </script>
-
-<style>
-
-</style>

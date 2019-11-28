@@ -24,7 +24,6 @@
 			deletable-chips
 			hide-selected
 			return-object
-			@change="updateTags($event)"
 		></v-combobox>
 	</v-container>
 </template>
@@ -38,15 +37,20 @@ export default {
 	name: 'AdminVideoShow',
 
 	created(){
-		this.$store.dispatch('loadAllTags')
+		this.$store.dispatch('tags/loadAll')
 	},
 
 	computed: {
-		...mapState(['videos', 'tags']),
-		...mapGetters(['getTag']),
+		...mapState({
+			videos: state => state.videos.videos,
+			tags: state => state.tags.tags
+		}),
+		...mapGetters({
+			getTag: 'tags/get'
+		}),
 
 		video() {
-			return this.videos.find(v => v.id == this.$route.params.id) 
+			return this.videos.find(v => v.id == this.$route.params.id)
 		},
 
 		videoTags: {
@@ -56,9 +60,10 @@ export default {
 			async set(newTags) { //! da, mozemo za setter da stavimo da je async
 				console.log(newTags)// vide se stringovi u nizu, dok su vec postojeci tagovi objekti, ti stringovi su novokreirani
 				let createdTag = newTags.find(t => typeof t == 'string')
+
 				if(createdTag) {
-					createdTag = await this.$store.dispatch('createTag', { name: createdTag })
-					this.$store.dispatch('connectTagToVideo', {
+					createdTag = await this.$store.dispatch('tags/create', { name: createdTag })
+					this.$store.dispatch('tags/connectToVideo', {
 						tag: createdTag, // a ovo radi jer smo za createTag() action stavili return createdTag
 						video: this.video
 					})
@@ -66,33 +71,23 @@ export default {
 				} else {
 					let addedTags = _.differenceBy(newTags, this.videoTags, 'id') //? prvi argument bigger, drugi je smaller, a treci property po kom poredimo prva dva 
 					let removedTags = _.differenceBy(this.videoTags, newTags, 'id') //? u ovom slucaju pcekujemo da videoTags bude veci od newTags
+
 					if(addedTags.length > 0) { // dodali smo tag 
-						this.$store.dispatch('connectTagToVideo', {
+						this.$store.dispatch('tags/connectToVideo', {
 							tag: addedTags[0],
 							video: this.video
 						})
 					}
-				}
-
-				if(removedTags.length > 0) { // dodali smo tag 
-					this.$store.dispatch('disconnectTagFromVideo', {
-						tag: removedTags[0],
-						video: this.video
-					})
+					if(removedTags.length > 0) { // dodali smo tag 
+						this.$store.dispatch('tags/disconnectFromVideo', {
+							tag: removedTags[0],
+							video: this.video
+						})
+					}
 				}
 			}
 		}
+		
 	},
-
-	methods: {
-		updateTags(newTags) {
-			// debugger
-		}
-	},
-
 }
 </script>
-
-<style>
-
-</style>

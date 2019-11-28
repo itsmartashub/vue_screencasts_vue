@@ -2,7 +2,8 @@
 	<v-card width="340px" hover :to="{ name: 'video-watch', params: {id: video.id} }" class="ma-2">
 
 		<v-img :src="video.thumbnail" />
-		<v-card-title>{{ video.name }}</v-card-title>
+		<v-card-title v-if="video.name">{{ video.name }}</v-card-title>
+		<!-- ovo v-if je samo zbog errora u konzoli da ne moze da pronadje vrednost 'name' of undefined, valjda se jos nije ucitalo i onda prikaze err bzvz, zatyo samo ovaj v-if -->
 
 		<v-card-text>
 			<div v-if="isPlayed(video.id)" class="red--text">
@@ -35,12 +36,12 @@ import { mapGetters } from 'vuex';
 export default {
 	name: 'VideoListVideo',
 	props: ['video'],
+
 	computed: {
-		...mapGetters(['getTag', 'isPlayed']),
+		...mapGetters({
+			getTag: 'tags/get', 
+			isPlayed: 'users/videoIsPlayed'
+		}),
 	}
 }
 </script>
-
-<style>
-
-</style>

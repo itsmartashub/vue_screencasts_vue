@@ -34,8 +34,8 @@ export default {
 
 	methods: {
 		async createVideo() {
-			let video = await this.$store.dispatch('createVideo', this.video)
-			this.$store.dispatch('setSnackbar', {
+			let video = await this.$store.dispatch('videos/create', this.video)
+			this.$store.dispatch('snackbar/setSnackbar', {
 				// showing: true, .. ovo ce biti difoltno te smo dodali u setSnackabaru
 				text: `You have successfully created a new video, "${video.name}" `
 			})
@@ -45,9 +45,3 @@ export default {
 	},
 }
 </script>
-
-<style scoped>
-input  {
-	border: 1px solid black;
-}
-</style>

@@ -18,7 +18,9 @@ export default {
 	},
 
 	computed: {
-		...mapState(['videos']),
+		...mapState({
+			videos: state => state.videos.videos
+		}),
 
 		video() {
 			return this.videos.find(v => v.id == this.$route.params.id) 
@@ -27,15 +29,11 @@ export default {
 
 	methods: {
 		async editVideo() {
-			let video = await this.$store.dispatch('editVideo', this.video)
-			this.$store.dispatch('setSnackbar', { text: `You have successfully edited your video, "${video.name}" ` })
+			let video = await this.$store.dispatch('videos/edit', this.video)
+			this.$store.dispatch('snackbar/setSnackbar', { text: `You have successfully edited your video, "${video.name}" ` })
 
 			this.$router.push({ name: 'admin-video-list' })
 		}
 	},
 }
 </script>
-
-<style>
-
-</style>

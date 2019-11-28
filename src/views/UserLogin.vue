@@ -14,13 +14,13 @@ export default {
 
 	methods: {
 		async loginUser(loginInfo) {
-			let user = await this.$store.dispatch('loginUser', loginInfo)
+			let user = await this.$store.dispatch('users/login', loginInfo)
 			
 			if(user.error) {
-				this.$store.dispatch('setSnackbar', { color: 'error', text: user.error })
+				this.$store.dispatch('snackbar/setSnackbar', { color: 'error', text: user.error })
 			} else {
 				// alert(`Thank you for signing in, ${user.name}!`)
-				this.$store.dispatch('setSnackbar', { color: '#00c58e', text: `Thank you for signing in,  ${user.name}!` })
+				this.$store.dispatch('snackbar/setSnackbar', { color: '#00c58e', text: `Thank you for signing in,  ${user.name}!` })
 
 				if(user.admin) {
 					this.$router.push('/admin/videos')
@@ -33,7 +33,3 @@ export default {
 	},
 }
 </script>
-
-<style>
-
-</style>

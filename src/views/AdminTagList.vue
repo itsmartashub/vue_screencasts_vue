@@ -65,7 +65,9 @@ export default {
 	},
 
 	computed: {
-		...mapState(['tags'])
+		...mapState({
+			tags: state => state.tags.tags
+		})
 	},
 
 	methods: {
@@ -79,7 +81,7 @@ export default {
 		},
 
 		updateTagName(tag) {
-			this.$store.dispatch('updateTagName', {tag})
+			this.$store.dispatch('tags/updateName', {tag})
 			this.tagEditingId = ''
 		},
 
@@ -87,7 +89,7 @@ export default {
 			let confirmed = confirm(`Are you sure you want to delete tag ${tag.name}? It is connected to ${tag.video_ids.length} videos.`)
 
 			if(confirmed) {
-				this.$store.dispatch('deleteTag', {tag})
+				this.$store.dispatch('tags/delete', {tag})
 			}
 		},
 
@@ -100,7 +102,7 @@ export default {
 
 		createTag() {
 			if(this.newTagName.length > 0) {
-				this.$store.dispatch('createTag', {name: this.newTagName})
+				this.$store.dispatch('tags/create', {name: this.newTagName})
 				this.newTagName = ''
 			}
 			this.isEditingNewTag = false

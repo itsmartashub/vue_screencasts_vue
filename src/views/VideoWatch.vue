@@ -3,7 +3,6 @@
 		<v-row>
 			<v-col md="9" cols="12">
 				<video-player
-					class="video-player-box"
 					ref="videoPlayer"
 					:options="playerOptions"
 					@ended="markPlayed"
@@ -17,7 +16,7 @@
 					<font-awesome-icon icon="check" /> Played
 				</div>
 				<div v-else>
-					<v-btn x-small @click="markPlayed" color="red lighten-1" dark v-if="currentUser.name">Mark Played</v-btn>
+					<v-btn x-small @click="markPlayed" color="red lighten-1" class="mt-2 mb-5" dark v-if="currentUser.name">Mark Played</v-btn>
 				</div>
 
 				<div v-html="video.description"></div>
@@ -27,15 +26,15 @@
 						:to="{name: 'tag', params: {id: tag_id}}"
 						color="#00c58e"
 						class="ma-1 mb-2"
+						dark
 					>
-						{{ getTag(tag_id).name }}
+						{{ getTag(tag_id) && getTag(tag_id).name }}
 					</v-btn>
 				</span>
 			</v-col>
 
 		</v-row>
 	</v-container>
-
 </template>
 
 <script>
@@ -54,8 +53,14 @@ export default {
 			return this.videos.find(v => v.id == this.$route.params.id) || {}
 		},
 
-		...mapGetters(['getTag', 'isPlayed']),
-		...mapState(['videos', 'currentUser']),
+		...mapGetters({
+			getTag: 'tags/get',
+			isPlayed: 'users/videoIsPlayed'
+		}),
+		...mapState({
+			videos: state => state.videos.videos,
+			currentUser: state => state.users.currentUser
+		}),
 		
 		playerOptions() { // https://www.npmjs.com/package/vue-video-player
 			return {
@@ -74,12 +79,8 @@ export default {
 
 	methods: {
 		markPlayed() {
-			this.$store.dispatch('markPlayed', this.video.id)
+			this.$store.dispatch('users/markVideoPlayed', this.video.id)
 		}
 	},
 }
 </script>
-
-<style>
-
-</style>

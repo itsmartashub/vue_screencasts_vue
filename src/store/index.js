@@ -78,6 +78,13 @@ export default new Vuex.Store({
 		},
 		CREATE_TAG(state, {tag}) {
 			state.tags = state.tags.concat(tag)
+		},
+		UPDATE_TAG_NAME(state, {tag}) {
+			let tagToUpdate = state.tags.find(t =>t.id == tag.id)
+			tagToUpdate.name = tag.name
+		},
+		DELETE_TAG(state, {tag}) {
+			state.tags = state.tags.filter(t => t.id != tag.id)
 		}
   },
 
@@ -235,11 +242,22 @@ export default new Vuex.Store({
 			let response = await Api().post('/tags', {name}) // server vraca tag sa name i id-em
 			let createdTag = response.data.data.attributes // {name: nekoIme}
 			createdTag.id = response.data.data.id // id taga
+			createdTag.video_ids = []
+			// console.log(createdTag);
 
 			commit('CREATE_TAG', { tag: createdTag })
 
 			return createdTag // da bismo mogli posle u templejtu da u asinhronoj f-ji, ovde je slucaj sa set() sacuvamo odg ove f-je tj return u promenljivoj koju posle prosledjujemo u connectTagToVideo() dispatchovanju kao jedan od propertija 
 		},
+
+		updateTagName({commit}, {tag}) {
+			Api().put(`/tags/${tag.id}`, tag)
+			commit('UPDATE_TAG_NAME', {tag})
+		},
+		deleteTag({commit}, {tag}) {
+			Api().delete(`/tags/${tag.id}`)
+			commit('DELETE_TAG', {tag})
+		}
 
 
   },

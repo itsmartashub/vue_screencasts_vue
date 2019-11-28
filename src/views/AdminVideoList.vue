@@ -52,7 +52,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .flex-table {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, 33%);
@@ -65,6 +65,6 @@ export default {
 }
 
 .actions * {
-	padding-right: 15px;
+	margin: 0 5px;
 }
 </style>
